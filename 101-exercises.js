@@ -1644,8 +1644,8 @@ addToDone("Exercise 91 is complete.")
 function totalOfBookPrices(array) {  
   var subtotal = 
     array.reduce(function(a, b) {
-    return a.price + b.price;
-  });
+    return a + b.price; // Why is it a + b.price and not a.price + b.price?
+  }, 0);            // Come back to understand why ", 0" ended up finally making this work!
   return subtotal;
 }
 
@@ -1656,7 +1656,14 @@ addToDone("Exercise 92 is complete.")
 // Exercise 93
 // Write a function named getAverageBookPrice that takes in a array of objects and returns the average book price.
 
-
+function getAverageBookPrice(arr) {
+  var sum = 
+      arr.reduce(function(a, b) {
+        return a + b.price;
+      }, 0);
+  var avg = sum / arr.length;
+  return avg;
+}
 
 assert(getAverageBookPrice(books), 30.725, "Exercise 93");
 addToDone("Exercise 93 is complete.")
@@ -1666,6 +1673,22 @@ addToDone("Exercise 93 is complete.")
 // Write a function called highestPriceBook that takes in the above defined array of objects "books" and returns the object containing the title, price, and author of the book with the highest priced book.
 // Hint: Much like sometimes start functions with a variable set to zero, you may want to create a object with the price set to zero to compare to each object's price in the array
 
+function highestPriceBook(array) {
+    var expensive = 0;
+    var final;
+
+    for (var i = 0; i < array.length; i++) {
+        if (array[i].price > expensive) {
+            expensive = array[i].price;
+        }
+    };
+    array.forEach(function(book) {
+        if (book.price === expensive) {
+            final = book;
+        }
+    });
+    return final;
+}
 
 
 assert(highestPriceBook(books), {
@@ -1690,6 +1713,22 @@ assert(lowestPriceBook(books), {
 }, "Exercise 95");
 addToDone("Exercise 95 is complete.")
 
+function lowestPriceBook(array) {
+    var expensive = 1000; //set it to 1000 for ease of completion. intend to go back and assess better methods of doing this.
+    var final;
+
+    for (var i = 0; i < array.length; i++) {
+        if (array[i].price < expensive) {
+            expensive = array[i].price;
+        }
+    };
+    array.forEach(function(book) {
+        if (book.price === expensive) {
+            final = book;
+        }
+    });
+    return final;
+}
 
 const shoppingCart = {
     "tax": .08,
@@ -1727,6 +1766,10 @@ const shoppingCart = {
 // Write a function named getTaxRate that takes in the above shopping cart as input and returns the tax rate.
 // Hint: How do you access a key's value on a object? The tax rate is one key of the entire shoppingCart object.
 
+function getTaxRate(input) {
+  return input.tax;
+}
+
 assert(getTaxRate(shoppingCart), .08, "Exercise 96");
 addToDone("Exercise 96 is complete")
 
@@ -1735,6 +1778,23 @@ addToDone("Exercise 96 is complete")
 // Exercise 97
 // Write a function named numberOfItemTypes that takes in the shopping cart as input and returns the number of unique item types in the shopping cart. 
 // We're not yet using the quantity of each item, but rather focusing on determining how many different types of items are in the cart.
+
+
+//Use do while to dig through layers as long as the next layer is > 1
+//verifty each property is unique by adding to array and checking against a list.
+
+function numberOfItemTypes(input) {
+  var total = 0;
+  total += input.length;
+  
+  input.forEach(function(interior) {
+    if (interior.length > 1) {
+      total += interior.length;
+    }
+  })
+
+  return total;
+}
 
 assert(numberOfItemTypes(shoppingCart), 5, "Exercise 97");
 addToDone("Exercise 97 is complete.")
